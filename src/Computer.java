@@ -56,4 +56,8 @@ public class Computer extends Player {
             }
         }
     }
+
+    public class TestGit {
+        private String hello = "Hello";
+    }
 }
