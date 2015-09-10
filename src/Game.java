@@ -21,4 +21,8 @@ public class Game {
         }
     }
 
+    public static void gitHub(){
+        System.out.println("Cool");
+    }
+
 }
