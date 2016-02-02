@@ -6,9 +6,6 @@ public class PrepareGame {
     static boolean isShotDone = false;
 
     public PrepareGame() throws InterruptedException {
-
-        System.out.println("fix 2");
-
         user = new User();
         Player.pleaseShipsOnGUIboard(user);
         comp = new Computer();
