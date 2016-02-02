@@ -13,6 +13,7 @@ public class TestGUI {
         seaBattle.setSize(1000, 750);
         seaBattle.setVisible(true);
 
+        System.out.println("test branches");
 
         PrepareGame start = new PrepareGame();
     }
