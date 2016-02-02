@@ -1,3 +1,6 @@
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -6,11 +9,17 @@ public class Player {
     String[][] playerShips = creatingBatleBoard();
     String[][] playerShotsBoard = creatingBatleBoard();
     ArrayList<Ship> allPlayerShips = new ArrayList<>();
-    ArrayList<Point> playerUsedPoints = new ArrayList<>();
+    static ArrayList<Point> playerUsedPoints = new ArrayList<>();
     int playerShipCounter = 10;
+    int decimal = 65;
+    static int single = 4;
+    static int doubl = 3;
+    static int treeple = 2;
+    static int fourth = 1;
 
     public Player() {
         initializingShips();
+
     }
 
     private void placeShip(ArrayList<Point> coordinates) {
@@ -42,6 +51,14 @@ public class Player {
             shipType--;
             if (shipType == 0)
                 break;
+        }
+    }
+
+    static void pleaseShipsOnGUIboard(Player player) {
+        for (Ship ship : player.allPlayerShips) {
+            for (Point point : ship.getCoordinates()) {
+                GUI_SeaBattle.getUserShipLocatorGUI()[point.getX()][point.getY()].setBackground(Color.green);
+            }
         }
     }
 
@@ -90,7 +107,7 @@ public class Player {
 
     private String[][] creatingBatleBoard() {
         String[][] games = new String[11][11];
-        int decimal = 65;
+
         for (int i = 0; i < games.length; i++) {
             for (int j = 0; j < games[i].length; j++) {
                 if (i == 0 && j == 0)
@@ -116,101 +133,81 @@ public class Player {
         return games;
     }
 
-    public void shot(Player player) {
-        testPrint();
+    public void shot(Player player, int x, int y) {
         boolean isIterapt = true;
         while (isIterapt) {
             int control = 0;
-            try {
-                System.out.println("-----------------------------------------------------------------------");
-                System.out.println("Введите координаты выстрела в виде: A1 (cheat - показать корабли):  ");
-                String entrance = Initializing.sc.nextLine();
-                if (entrance.equals("cheat")) {
-                    player.testPrint();
-                } else {
-                    char[] xy = entrance.toCharArray();
-                    if (xy.length > 2) {
-                        throw new Exception();
-                    }
-                    int x = ((int) xy[0]) - 64;
-                    int y = Character.getNumericValue(xy[1]);
-                    Point point = new Point(x, y);
-                    if (playerUsedPoints.contains(point)) {
-                        System.out.println("Вы уже вводили эту коорданату, повторите попытку. ");
-                    } else {
-                        playerUsedPoints.add(new Point(x, y));
-                        playerShotsBoard[x][y] = " $";
-                        for (Ship ship : player.allPlayerShips) {
-                            for (Point points : ship.getCoordinates()) {
-                                if (points.equals(point)) {
-                                    if (ship.isKilled()) {
-                                        playerShipCounter--;
-                                        isIterapt=false;
-                                    }
-                                    playerShotsBoard[x][y] = " X";
-                                    control++;
-                                    testPrint();
-                                }
-                            }
+            GUI_SeaBattle.batleLogText.append("Вы выстрелили по [ " + Character.toString((char) (decimal + x - 1)) + "" + y + " } координате.\n");
+            Point point = new Point(x, y);
+            playerUsedPoints.add(new Point(x, y));
+            playerShotsBoard[x][y] = " $";
+            for (Ship ship : player.allPlayerShips) {
+                for (Point points : ship.getCoordinates()) {
+                    if (points.equals(point)) {
+                        if (ship.isKilled()) {
+                            playerShipCounter--;
+                            drowAroundKilledShip(ship);
+
                         }
-                        if (control == 0) {
-                            System.out.println("Вы выстрелили мимо!!! \n");
-                            isIterapt = false;
-                        }
+                        playerShotsBoard[x][y] = " X";
+                        GUI_SeaBattle.getEnemyShipLocatorGUI()[x][y].setBackground(Color.red);
+                        control++;
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("Неправельный ввод! Повторите попытку. ");
+            }
+            isIterapt = false;
+            if (control == 0) {
+                GUI_SeaBattle.batleLogText.append("К сожалению Вы выстрелили мимо!!! \n**********************************************************************\n");
+                isIterapt = false;
+                PrepareGame.isShotDone = true;
             }
         }
     }
 
-    public void testPrint(){
-        System.out.println("          Ваши корабли                         Доска выстрелов");
-        int endOfLoop = playerShips.length >  playerShotsBoard.length ? playerShips.length : playerShotsBoard.length;
-        for(int i = 0; i < endOfLoop; i++){
-            if(playerShips.length > i){
-                printLine(playerShips[i]);
-                System.out.print("     ");
+    public void drowAroundKilledShip(Ship ship) {
+        int x;
+        int y;
+        for (Point point : ship.getCoordinates()) {
+            x = point.getX();
+            y = point.getY();
+            if (x == 9 && y == 9) {
+                setPreferenses(GUI_SeaBattle.getUserShipLocatorGUI()[x - 1][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getUserShipLocatorGUI()[x - 1][y], null);
+                setPreferenses(GUI_SeaBattle.getUserShipLocatorGUI()[x][y - 1], null);
+            } else if (y == 9) {
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x + 1][y], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x + 1][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y], null);
+            } else if (x == 9) {
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y + 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x][y + 1], null);
             } else {
-                printBlankLine(playerShips[0].length);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y + 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x - 1][y], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x + 1][y], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x + 1][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x + 1][y + 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x][y - 1], null);
+                setPreferenses(GUI_SeaBattle.getEnemyShipLocatorGUI()[x][y + 1], null);
+
             }
-
-            if(playerShotsBoard.length > i){
-                printLine(playerShotsBoard[i]);
-            }
-            System.out.println();
+        }
+        for (Point point: ship.getCoordinates()){
+            x = point.getX();
+            y = point.getY();
+            GUI_SeaBattle.getEnemyShipLocatorGUI()[x][y].setBackground(Color.red);
         }
     }
 
-    private static void printLine(String[] line){
-        for(String number : line){
-            System.out.print(number + " ");
-        }
+    public void setPreferenses(JButton button, Point point) {
+        button.setEnabled(false);
+        button.setBackground(Color.yellow);
+        playerUsedPoints.add(point);
     }
-
-    private static void printBlankLine(int lenght){
-        for(int i=0; i < lenght; i++) {
-            System.out.print("     ");
-        }
-    }
-
-  /*  public void printShipBoard() {
-        for (int i = 0; i < playerShips.length; i++) {
-            for (int j = 0; j < playerShips[i].length; j++) {
-                System.out.print(playerShips[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
-    public void printShotBoard() {
-        for (int i = 0; i < playerShotsBoard.length; i++) {
-            for (int j = 0; j < playerShotsBoard[i].length; j++) {
-                System.out.print(playerShotsBoard[i][j]);
-            }
-            System.out.println();
-        }
-    }
-*/
 }

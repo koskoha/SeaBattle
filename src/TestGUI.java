@@ -1,10 +1,10 @@
+
+
 import javax.swing.*;
 import java.io.IOException;
 
 public class TestGUI {
-    /*
-    * ���������� �������� ��������� ����������� �������� ���������� ��� ��������� (��� ������� �����������)
-     */
+
 
 
     public static void main(String[] args) throws InterruptedException, IOException {

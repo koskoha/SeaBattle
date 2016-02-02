@@ -1,9 +1,10 @@
+
+
 import java.util.ArrayList;
 
 public class Ship {
     private int lenght;
     private boolean horizontal;
-    private boolean isAlive = true;
     private boolean injured = false;
     private ArrayList<Point> coordinates = new ArrayList<>();
 
@@ -28,29 +29,15 @@ public class Ship {
     }
 
 
-
-
     public boolean isKilled() {
         lenght--;
         if (lenght == 0) {
-            this.isAlive = false;
-            System.out.println("Корабль убит!!!");
-            System.out.println("-----------------------------------------------------------------------");
+            GUI_SeaBattle.batleLogText.append("Congratulations, you've sunk ship \n**********************************************************************\n");
             return true;
-        }else{
-            injured =true;
-            System.out.println("Корабль ранен!!!");
-            System.out.println("-----------------------------------------------------------------------");
+        } else {
+            injured = true;
+            GUI_SeaBattle.batleLogText.append("The ship was hit \n**********************************************************************\n");
             return false;
         }
     }
-
-    public boolean isInjured(){
-        if (injured){
-            return true;
-        }
-        return false;
-    }
-
-
 }

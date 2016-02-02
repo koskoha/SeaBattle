@@ -1,3 +1,4 @@
+
 public class Point {
     int x;
     int y;
@@ -17,10 +18,10 @@ public class Point {
 
     @Override
     public boolean equals(Object o) {
-        Point point = (Point)o;
-        if (!(point.getX()==x))
+        Point point = (Point) o;
+        if (!(point.getX() == x))
             return false;
-        else if (!(point.getY()==y)){
+        else if (!(point.getY() == y)) {
             return false;
         }
         return true;
