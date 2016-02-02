@@ -1,4 +1,4 @@
-
+﻿
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public class Player {
             }
             isIterapt = false;
             if (control == 0) {
-                GUI_SeaBattle.batleLogText.append("К сожалению Вы выстрелили мимо!!! \n**********************************************************************\n");
+                GUI_SeaBattle.batleLogText.append("Unfortunately you shot misses!!! \n**********************************************************************\n");
                 isIterapt = false;
                 PrepareGame.isShotDone = true;
             }
