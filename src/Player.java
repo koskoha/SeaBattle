@@ -137,7 +137,7 @@ public class Player {
         boolean isIterapt = true;
         while (isIterapt) {
             int control = 0;
-            GUI_SeaBattle.batleLogText.append("Вы выстрелили по [ " + Character.toString((char) (decimal + x - 1)) + "" + y + " } координате.\n");
+            GUI_SeaBattle.batleLogText.append("You shot on [ " + Character.toString((char) (decimal + x - 1)) + "" + y + " } coordinate.\n");
             Point point = new Point(x, y);
             playerUsedPoints.add(new Point(x, y));
             playerShotsBoard[x][y] = " $";
